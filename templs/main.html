@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+
+	// outputs
+	<title>|page.title|</title>
+
+	// Variables
+	|a = 'abc'|
+	|a .= 'def'|
+	|a .= a|
+	|a = 1|
+	|c = 'hey'|
+	|a. c|
+
+
+
+	/// Ifs
+	|if a == 'abc' and b == 'bc'|
+		The if block
+	|elif a != 'ab'|
+
+	|else|
+		Else If
+	|end|
+
+	// blocks are recorded and added to else and ends
+
+
+	// short if
+	<div class="main|a == 'abc' ? ' selected'. $b :|"></div>
+	<div class="main|a == 'abc' and a == 'b' ? ' selected' :|"></div> // same as above (only if a === 'abc')
+	<div class="main|a ?? 'a is undef\' escape in strined or null'|"></div>
+
+	// for loop (foreach)
+	|for a in 0..=10|
+		Counting up |a|/10
+	|else|
+		There was no error
+	|end|
+
+	// arrays
+	|ar = ['abc', 'cdef', 'abcefg']|
+
+	|for k, b in ar|
+		Array : |k| |esc b|
+	|end|
+
+	Escaped \| it works
+
+	Thats my Path \\ abc
+
+	// Blocks
+	|block 'main'|
+		Main Block
+	|end|
+
+	|out 'main'|
+
+	// functions calls
+	\|page.setTitle('abc')\|
+
+	// functions (internal functions) (but can use esc('str') two )
+	|esc 'escaping a '|
+	|rep 5, 'escaping a '| // repeat 5 times
+
+	<link rel="stylesheet" type="text/css" href="|url|hello/great/">
+
+</head>
+<body>
+
+</body>
+</html>
