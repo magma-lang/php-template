@@ -16,7 +16,7 @@ PHP 7.2 or bigger
 <p>Multiplies |a| with |b| equals |a * b|</p>
 <p>Combine strings |'abc'. a. 'hey'|</p>
 
-|for i 0..=10|
+|for i in 0..=10|
   Counting up |i|/10
 |end|
 
