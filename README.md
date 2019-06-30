@@ -36,16 +36,26 @@ PHP 7.2 or bigger
 |end|
 
 |rep 10, '.'|
+
+|block 'my-block'| // the first occurence is used and the rest is ignored
+  Thats in the block
+|end|
+
+|out 'my-block'|
+
+|inc 'myotherfile'|
 ```
 
 ### HTML
-templs/test.html
-templs/main.html
+- templs/test.html
+- templs/main.html
 
 ### Execution
 main.php
 
 ## Future
+
+Maybe make esc standard and create a method called raw.
 
 ### Methods
 - .len()
