@@ -4,7 +4,7 @@ At the moment is a combination of the PHP syntax and Magma syntax.
 More features will be added.
 
 ## Requirements
-PHP 7.2 or bigger
+PHP 7.2 or higher
 
 ## Examples
 
