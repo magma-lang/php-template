@@ -2,7 +2,7 @@
 /*
 @package: Magma PHP Template Engine
 @author: Sören Meier <info@s-me.ch>
-@version: 0.1.1 <2019-08-23>
+@version: 0.1.2 <2019-08-23>
 @docs: templ.magma-lang.com/php/docs/
 */
 
@@ -156,8 +156,10 @@ class BlockParser {
 					$exp = sprintf( 'count( %s ) === 0', $tree[1][1] );
 					$o = sprintf( '} if ( %s ) {', $exp );
 					$this->tree = [ 'if', $exp, $tree[2] ];
-				} else
+				} else {
 					$o .= '}';
+					$this->tree = $tree[2];
+				}
 
 				break;
 
