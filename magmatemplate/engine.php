@@ -2,7 +2,7 @@
 /*
 @package: Magma PHP Template Engine
 @author: Sören Meier <info@s-me.ch>
-@version: 0.1 <2019-06-26>
+@version: 0.1.1 <2019-08-23>
 @docs: templ.magma-lang.com/php/docs/
 */
 
@@ -35,10 +35,14 @@ class Engine {
 			'between' => '\MagmaTemplate\Helper::between',
 			'rep' => '\MagmaTemplate\Helper::repeat',
 			'inc' => '$engine->parseAndExecute',
+			'join' => '\MagmaTemplate\Helper::join',
 
 			'startBlock' => '\MagmaTemplate\Blocks::start',
 			'endBlock' => '\MagmaTemplate\Blocks::end',
-			'out' => '\MagmaTemplate\Blocks::out'
+			'out' => '\MagmaTemplate\Blocks::out',
+			'dump' => 'var_dump',
+			'has' => '\MagmaTemplate\Helper::has',
+			'replace' => 'str_replace'
 		];
 
 		$this->templPath = $templPath;
@@ -57,7 +61,7 @@ class Engine {
 
 	public function parse( string $file ) {
 
-		$path = $this->templPath. $file. '.html';
+		$path = $this->templPath. str_replace( '/', DS, $file ). '.html';
 
 		if ( !is_file( $path ) )
 			throw new \Error( sprintf( 'could not find file "%s"', $path ) );
@@ -65,14 +69,8 @@ class Engine {
 		$ctn = file_get_contents( $path );
 
 		$s = '';
-		foreach ( $this->divider->divide( $ctn ) as $p ) {
-
-			if ( $p[0] ) // if is block
-				$s .= $this->parser->parse( $p[1] );
-			else
-				$s .= $p[1];
-
-		}
+		foreach ( $this->divider->divide( $ctn ) as $p )
+			$s .= $p[0] ? $this->parser->parse( $p[1] ) : $p[1];
 
 		return $s;
 
@@ -82,18 +80,18 @@ class Engine {
 
 		$php = '<?php if ( !isset( $includedByEngine ) ) { die; } ?>';
 		$php .= $this->parse( $file );
-		file_put_contents( $this->tmpPath. $file. '.php', $php );
+		file_put_contents( $this->tmpPath. md5( $file ). '.php', $php );
 
 	}
 
-	public function parseAndExecute( string $file ) {
+	public function parseAndExecute( string $file, array $ar = [] ) {
 
-		$path = $this->tmpPath. $file. '.php';
+		$path = $this->tmpPath. md5( $file ). '.php';
 
 		if ( !is_file( $path ) || $this->debug )
 			$this->parseAndSave( $file );
 
-		engineInclude( $path, $this->data, $this );
+		engineInclude( $path, array_merge( $this->data, $ar ), $this );
 
 	}
 
