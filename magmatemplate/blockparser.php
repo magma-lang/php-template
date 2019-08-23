@@ -51,7 +51,7 @@ class BlockParser {
 		$matches = [
 			'/^(if|for|block|elif)\s/',
 			'/^(else|end)$/',
-			'/^[A-Za-z0-9.]*\s*(=|[+\/\-*.]=)(?=\s)/'
+			'/^[A-Za-z0-9.\[\]]*\s*(=|[+\/\-*.]=)(?=\s)/'
 		];
 
 		foreach ( $matches as $k => $match )
