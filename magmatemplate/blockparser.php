@@ -2,7 +2,7 @@
 /*
 @package: Magma PHP Template Engine
 @author: Sören Meier <info@s-me.ch>
-@version: 0.1 <2019-06-26>
+@version: 0.1.1 <2019-08-23>
 @docs: templ.magma-lang.com/php/docs/
 */
 
@@ -49,7 +49,7 @@ class BlockParser {
 	protected function checkType( string $block ) {
 
 		$matches = [
-			'/^(if|for|block|elif)/',
+			'/^(if|for|block|elif)\s/',
 			'/^(else|end)$/',
 			'/^[A-Za-z0-9.]*\s*(=|[+\/\-*.]=)(?=\s)/'
 		];
@@ -85,7 +85,7 @@ class BlockParser {
 				$exp = $this->baseReplace( $exp );
 
 				if ( $this->tree[0] !== 'if' )
-					throw new Error( sprintf( 'elif (exp: %s) can only follow an if statement', $exp ) );
+					throw new \Error( sprintf( 'elif (exp: %s) can only follow an if statement', $exp ) );
 
 				$this->tree = [ 'if', $exp, $this->tree[2] ];
 
@@ -93,10 +93,10 @@ class BlockParser {
 				break;
 
 			case 'for':
-				$parts = array_map( 'trim', explode( 'in', $exp ) );
+				$parts = array_map( 'trim', explode( ' in ', $exp ) );
 
 				if ( count( $parts ) !== 2 )
-					throw new Error( sprintf( 'for loop (exp: %s) needs to have an in', $exp ) );
+					throw new \Error( sprintf( 'for loop (exp: %s) needs to have an in', $exp ) );
 
 				$assign = str_replace( ',', ' =>', $this->replaceVariables( $parts[0] ) );
 				$item = $this->replaceVariables( $parts[1] );
@@ -232,14 +232,16 @@ class BlockParser {
 
 		$s = preg_replace( '/(\d+)\.\.(\d+)/', 'between( $1, $2 )', $s );
 		$s = preg_replace( '/(\d+)\.\.=(\d+)/', 'between( $1, $2 + 1 )', $s );
-		$s = preg_replace( '/(?<=^|\s)([a-zA-Z]\w*)(?=\s|\.|,|$)/', '\$$1', $s );
-		$s = preg_replace( '/(?<=\w)(\.)(?=[a-zA-Z])/', '->', $s );
+		$s = preg_replace( '/(?<=^|\s|!|>|=)([a-zA-Z]\w*)(?=\s|\.|,|\[|$|\])/', '\$$1', $s );
+		$s = preg_replace( '/(?<=\w|\]|\))(\.)(?=[a-zA-Z])/', '->', $s );
 		return $s;
 
 	}
 
 	protected function replaceTernary( string $s ) {
-		return preg_replace( '/:$/', ': \'\'', $s );
+		$s = preg_replace( '/:$/', ': \'\'', $s );
+		$s = preg_replace( '/\?\?$/', '?? \'\'', $s );
+		return $s;
 	}
 
 	protected function replaceLogical( string $s ) {
