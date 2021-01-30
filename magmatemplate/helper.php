@@ -2,30 +2,10 @@
 /*
 @package: Magma PHP Template Engine
 @author: Sören Meier <info@s-me.ch>
-@version: 0.1 <2019-06-26>
-@docs: templ.magma-lang.com/php/docs/
+@version: 0.1.1 <2019-08-23>
 */
 
 namespace MagmaTemplate;
-
-class Blocks {
-
-	protected static $blocks = [];
-
-	public static function start() {
-		ob_start();
-	}
-
-	public static function end( string $name ) {
-		if ( !isset( self::$blocks[$name] ) )
-			self::$blocks[$name] = ob_get_clean();
-	}
-
-	public static function out( string $name ) {
-		echo self::$blocks[$name] ?? '';
-	}
-
-}
 
 class Helper {
 
@@ -47,6 +27,21 @@ class Helper {
 
 	public static function esc( string $str ) {
 		return htmlspecialchars( $str, ENT_HTML5 | ENT_QUOTES, 'UTF-8' );
+	}
+
+	public static function has( $d = null ) {
+
+		if ( is_string( $d ) )
+			return str_len( $d ) > 0;
+		else if ( is_array( $d ) )
+			return count( $d ) > 0;
+
+		return !is_null( $d );
+
+	}
+
+	public static function join( array $ar, $char = '' ) {
+		return implode( $char, $ar );
 	}
 
 }

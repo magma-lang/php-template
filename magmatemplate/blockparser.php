@@ -3,7 +3,6 @@
 @package: Magma PHP Template Engine
 @author: Sören Meier <info@s-me.ch>
 @version: 0.1.2 <2019-08-23>
-@docs: templ.magma-lang.com/php/docs/
 */
 
 namespace MagmaTemplate;
