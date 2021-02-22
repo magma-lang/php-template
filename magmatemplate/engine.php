@@ -60,7 +60,7 @@ class Engine {
 
 	public function parse( string $file ) {
 
-		$path = $this->templPath. str_replace( '/', DS, $file ). '.html';
+		$path = $this->templPath. str_replace( '/', DIRECTORY_SEPARATOR, $file ). '.html';
 
 		if ( !is_file( $path ) )
 			throw new \Error( sprintf( 'could not find file "%s"', $path ) );
